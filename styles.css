@@ -48,6 +48,7 @@ header img {
   border: none;
   background-color: #ff9595;
   width: 100%;  /* Full width */
+  font-weight: bold; /* Make text bold */
   overflow: hidden; /* Ensure content does not overflow */
   position: relative;  /* Positioning for absolute elements */
 }
