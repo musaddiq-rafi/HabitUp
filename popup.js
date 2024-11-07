@@ -21,8 +21,10 @@ function renderHabits(habits) {
     habitItem.className = "habit-item";
     habitItem.innerHTML = `
       <span>${habit.name} (${habit.streak}/${habit.totalDays} days)</span>
-      <button class="done-btn" data-index="${index}">Done</button>
-      <button class="delete-btn" data-index="${index}">Delete</button>
+      <div class="buttons">
+        <button class="done-btn" data-index="${index}">Done</button>
+        <button class="delete-btn" data-index="${index}">Delete</button>
+      </div>
     `;
     habitList.appendChild(habitItem);
   });

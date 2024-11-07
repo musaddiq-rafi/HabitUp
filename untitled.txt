@@ -1,40 +1,30 @@
 body {
   font-family: Arial, sans-serif;
-  padding: 10px;  
+  padding: 10px; 
   width: 400px; /* Fixed width for the entire window */
   max-width: 500px;
   height: 600px; /* Fixed height for the entire window */
-  margin: 0 auto; 
-  background-color: #f1c3c3; /* Optional: Add a background color */
-  box-sizing: border-box; /*
-  overflow: hidden ; /* Prevent overflow */
+  margin: 0 auto;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent overflow */
 }
 
-header {
-  display: flex;
-  justify-content: center; /* Center the image horizontally */
-  align-items: center; /* Center the image vertically */
-  height: 180px; /* Adjust the height as needed */
-  background-color: #f1c3c3; /* Optional: Add a background color */
-  padding: 10px; /* Optional: Add padding if needed */
-}
-
-header img {
-  max-height: 100%; /* Ensure the image fits within the header height */
-  max-width: 100%; /* Ensure the image does not overflow horizontally */
-  background-color: #fa8a8a; /* Placeholder background */
-  height: auto; /* Maintain aspect ratio */
-  width: auto; /* Maintain aspect ratio */
-}
+/* #habit-list {
+  margin-top: 15px; 
+  min-height: 300px; /* Set a minimum height to ensure consistent size */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+} */ 
 
 #habit-list {
-  margin-top: 10px;
-  max-height: 350px; /* Restrict max height for habit list */
+  min-height: 300px;
+  max-height: 400px; /* Restrict max height */
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
-  align-items: center; /* Center elements horizontally */
+  flex-direction: column;
+  align-items: center;
   overflow-y: auto; /* Enable scroll for overflow */
-  gap: 5px; /* Space between habit items */
 }
 
 .habit-item {
@@ -46,7 +36,7 @@ header img {
   padding: 10px; 
   /* Remove box styling */
   border: none;
-  background-color: #ff9595;
+  background-color: #b3aeae;
   width: 100%;  /* Full width */
   overflow: hidden; /* Ensure content does not overflow */
   position: relative;  /* Positioning for absolute elements */
@@ -54,8 +44,8 @@ header img {
 
 .image-container {
   width: 100%;
-  height: 100%;  /* Fixed height */
-  background-color: #ff9595;  /* Placeholder background */
+  height: 100px;  /* Fixed height */
+  background-color: #f1f1f1;  /* Placeholder background */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,14 +81,11 @@ header img {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family:'Arial Narrow Bold', sans-serif;
-  font-size: large; /* Increase font size */
-  font-weight: bold; /* Make messages bold */
 }
 
 #image-box {
   width: 100%;
-  height: 200px;  /* Reduced height */
+  height: 150px;  /* Reduced height */
   overflow: hidden;  /* Ensure content does not overflow */
   display: flex;
   justify-content: center; 
