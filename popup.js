@@ -62,32 +62,37 @@ addHabitButton.addEventListener("click", () => {
 
 // Complete a habit and increase its streak
 function completeHabit(index) {
-  chrome.storage.local.get("habits", (data) => {
-    const habits = data.habits || [];
-    
-    if (habits[index]) {
-      habits[index].streak++; // Increase streak by 1 day for each "Done"
-      console.log("Updated streak:", habits[index].streak); // Log new streak value
+    chrome.storage.local.get("habits", (data) => {
+      const habits = data.habits || [];
       
-      if (habits[index].streak >= habits[index].totalDays) {
-        deleteHabit(index); // Auto-delete habit if streak reaches totalDays
-      } else {
-        chrome.storage.local.set({ habits }, () => {
-          console.log("Storage updated with new streak");
-          
-          // Show message after storage update
+      if (habits[index]) {
+        habits[index].streak++; // Increase streak by 1 day for each "Done"
+        console.log("Updated streak:", habits[index].streak); // Log new streak value
+        
+        if (habits[index].streak >= habits[index].totalDays) {
+          // Show final message before deleting
           showCongratulatoryMessage(habits[index].streak, habits[index].totalDays);
           
-          // Reload habit list after storage update
-          loadHabits();
-        });
+          // Delay deletion slightly to allow message display
+          setTimeout(() => deleteHabit(index), 1000);
+          
+        } else {
+          chrome.storage.local.set({ habits }, () => {
+            console.log("Storage updated with new streak");
+            
+            // Show message after storage update
+            showCongratulatoryMessage(habits[index].streak, habits[index].totalDays);
+            
+            // Reload habit list after storage update
+            loadHabits();
+          });
+        }
+      } else {
+        console.log("Habit not found at index:", index); // Log if habit is missing
       }
-    } else {
-      console.log("Habit not found at index:", index); // Log if habit is missing
-    }
-  });
-}
-
+    });
+  }
+  
 // Delete a habit
 function deleteHabit(index) {
   chrome.storage.local.get("habits", (data) => {
@@ -117,18 +122,21 @@ function showCongratulatoryMessage(day, totalDays) {
   messageBox.innerHTML = ''; // Clear any existing message
   imageBox.innerHTML = ''; // Clear any existing image
 
-  if (day === 1) {
-    message.textContent = "Good job on your first day!";
-    image.src = "memes/dbac2460-e3a4-48e3-8ba4-bb0530aa9850_text.gif"; // Replace with your meme for day 1
-  } else if (day === 3) {
-    message.textContent = "Kop Bro! Keep cooking";
-    image.src = "memes/letHimCook.jpeg"; // Replace with your meme for day 3
-  } else if (day === totalDays) {
-    message.textContent = "Yaaaay! You're done";
-    image.src = "memes/finished_meme.jpeg"; // Replace with your meme for the last day
-  } else {
+    if (day === 1) {
+        message.textContent = "Good job on your first day!";
+        image.src = "memes/dbac2460-e3a4-48e3-8ba4-bb0530aa9850_text.gif"; // Replace with your meme for day 1
+    } 
+    else if (day === 3) {
+        message.textContent = "Kop Bro! Keep cooking";
+        image.src = "memes/letHimCook.jpeg"; // Replace with your meme for day 3
+        } 
+    else if (day === totalDays) {
+        message.textContent = "Yaaaay! You're done";
+        image.src = "memes/finished_meme.jpeg"; // Replace with your meme for the last day
+    }
+    else {
     message.textContent = "Keep up the good work";
-   // image.src = "memes/keep_up_the_good_work.jpeg"; // Replace with your meme for other days
+    image.src = "memes/keep_doing.jpg"; // Replace with your meme for other days
   }
 
   messageBox.appendChild(message);
