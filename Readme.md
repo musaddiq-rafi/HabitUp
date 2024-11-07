@@ -36,7 +36,7 @@ HabitUP is a lightweight Chrome extension designed to help you build and maintai
 - `popup.html`: The main HTML file for the extension's popup.
 - `popup.js`: JavaScript for handling habit logic and user interactions.
 - `styles.css`: CSS for styling the popup interface.
-- `memes/`: A folder containing motivational memes for specific milestone days.
+- `memes/`: A folder containing memes for specific milestone days.
 
 ## Contributing
 
