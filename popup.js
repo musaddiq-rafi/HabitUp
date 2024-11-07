@@ -90,13 +90,13 @@ function showCongratulatoryMessage(day) {
 
   if (day === 1) {
     message.textContent = "Good job on your first day!";
-    image.src = "images/first-day-meme.jpg"; // Add your meme image for day 1
+    image.src = "memes/dbac2460-e3a4-48e3-8ba4-bb0530aa9850_text.gif"; // Add your meme image for day 1
   } else if (day === 3) {
     message.textContent = "Kop Bro! Keep cooking";
-    image.src = "images/day-3-meme.jpg"; // Add your meme image for day 3
+    image.src = "memes/letHimCook.jpeg"; // Add your meme image for day 3
   } else {
     message.textContent = `Congratulations! You made it to day ${day}!`;
-    image.src = "images/ending-meme.jpg"; // Add your meme image for the last day
+    image.src = "memes/finished_meme.jpeg"; // Add your meme image for the last day
   }
 
   messageBox.appendChild(message);
