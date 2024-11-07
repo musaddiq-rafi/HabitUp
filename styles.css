@@ -1,0 +1,16 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+    width: 250px;
+  }
+  
+  #habit-list {
+    margin-top: 10px;
+  }
+  
+  .habit-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
