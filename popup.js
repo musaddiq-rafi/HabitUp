@@ -4,25 +4,12 @@ const newHabitInput = document.getElementById("new-habit");
 const messageBox = document.getElementById("message-box");
 const imageBox = document.getElementById("image-box");
 
-// Load habits and start date from storage
+// Load habits from storage
 function loadHabits() {
-  chrome.storage.local.get(["habits", "startDate"], (data) => {
+  chrome.storage.local.get("habits", (data) => {
     const habits = data.habits || [];
-    const startDate = data.startDate || null;
     renderHabits(habits);
-    if (startDate) {
-      const currentDay = calculateDaysSinceStart(startDate);
-      showCongratulatoryMessage(currentDay);
-    }
   });
-}
-
-// Calculate days since the start date
-function calculateDaysSinceStart(startDate) {
-  const start = new Date(startDate);
-  const today = new Date();
-  const diffTime = today - start;
-  return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // Add 1 to start from day 1
 }
 
 // Render habits in the popup
@@ -34,6 +21,7 @@ function renderHabits(habits) {
     habitItem.innerHTML = `
       <span>${habit.name} (${habit.streak} days)</span>
       <button class="complete-btn" data-index="${index}">Complete</button>
+      <button class="delete-btn" data-index="${index}">Delete</button>
     `;
     habitList.appendChild(habitItem);
   });
@@ -43,6 +31,14 @@ function renderHabits(habits) {
     button.addEventListener("click", (event) => {
       const index = parseInt(event.target.getAttribute("data-index"));
       completeHabit(index);
+    });
+  });
+
+  // Attach event listeners to "Delete" buttons
+  document.querySelectorAll(".delete-btn").forEach(button => {
+    button.addEventListener("click", (event) => {
+      const index = parseInt(event.target.getAttribute("data-index"));
+      deleteHabit(index);
     });
   });
 }
@@ -63,19 +59,40 @@ addHabitButton.addEventListener("click", () => {
 
 // Complete a habit and increase its streak
 function completeHabit(index) {
-  chrome.storage.local.get(["habits", "startDate"], (data) => {
+  chrome.storage.local.get("habits", (data) => {
     const habits = data.habits || [];
-    const startDate = data.startDate || null;
     
     if (habits[index]) {
       habits[index].streak++;
+      chrome.storage.local.set({ habits }, () => {
+        showCongratulatoryMessage(habits[index].streak);
+        loadHabits(); // Reload habit list after update
+      });
+    }
+  });
+}
+
+// Reset a habit's streak to 0
+function resetHabit(index) {
+  chrome.storage.local.get("habits", (data) => {
+    const habits = data.habits || [];
+    
+    if (habits[index]) {
+      habits[index].streak = 0;
       chrome.storage.local.set({ habits });
+      loadHabits(); // Reload habit list after update
+    }
+  });
+}
 
-      // Update current day and check milestone
-      let currentDay = calculateDaysSinceStart(startDate);
-      chrome.storage.local.set({ currentDay });
-
-      showCongratulatoryMessage(currentDay);
+// Delete a habit
+function deleteHabit(index) {
+  chrome.storage.local.get("habits", (data) => {
+    let habits = data.habits || [];
+    
+    if (habits[index]) {
+      habits.splice(index, 1); // Remove the habit from the array
+      chrome.storage.local.set({ habits });
       loadHabits(); // Reload habit list after update
     }
   });
@@ -90,13 +107,13 @@ function showCongratulatoryMessage(day) {
 
   if (day === 1) {
     message.textContent = "Good job on your first day!";
-    image.src = "memes/dbac2460-e3a4-48e3-8ba4-bb0530aa9850_text.gif"; // Add your meme image for day 1
+    image.src = "memes/dbac2460-e3a4-48e3-8ba4-bb0530aa9850_text.gif"; // Replace with your meme for day 1
   } else if (day === 3) {
     message.textContent = "Kop Bro! Keep cooking";
-    image.src = "memes/letHimCook.jpeg"; // Add your meme image for day 3
+    image.src = "memes/letHimCook.jpeg"; // Replace with your meme for day 3
   } else {
     message.textContent = `Congratulations! You made it to day ${day}!`;
-    image.src = "memes/finished_meme.jpeg"; // Add your meme image for the last day
+    image.src = "memes/finished_meme.jpeg"; // Replace with your meme for the last day
   }
 
   messageBox.appendChild(message);
@@ -105,14 +122,3 @@ function showCongratulatoryMessage(day) {
 
 // Initialize (on extension load)
 loadHabits();
-
-// Set custom start date (this could be done in your extension's settings)
-function setStartDate(date) {
-  chrome.storage.local.set({ startDate: date }, () => {
-    console.log("Start date set:", date);
-loadHabits(); 
-  }
-  )
-}
-// Example: Set start date manually for testing (you can remove this part later)
-setStartDate("2024-11-01"); // Set your custom start date here
